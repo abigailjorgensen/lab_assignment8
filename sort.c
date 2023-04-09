@@ -4,10 +4,69 @@
 
 int extraMemoryAllocated;
 
+void swap(int* a, int* b)
+{
+ 
+    int temp = *a;
+ 
+    *a = *b;
+ 
+    *b = temp;
+}
+ 
+void heapify(int arr[], int N, int i)
+{
+    // Find largest among root, left child and right child
+ 
+    // Initialize largest as root
+    int largest = i;
+ 
+    // left = 2*i + 1
+    int left = 2 * i + 1;
+ 
+    // right = 2*i + 2
+    int right = 2 * i + 2;
+ 
+    // If left child is larger than root
+    if (left < N && arr[left] > arr[largest])
+ 
+        largest = left;
+ 
+    // If right child is larger than largest
+    // so far
+    if (right < N && arr[right] > arr[largest])
+ 
+        largest = right;
+ 
+    // Swap and continue heapifying if root is not largest
+    // If largest is not root
+    if (largest != i) {
+ 
+        swap(&arr[i], &arr[largest]);
+ 
+        // Recursively heapify the affected
+        // sub-tree
+        heapify(arr, N, largest);
+    }
+}
+
 // implements heap sort
 // extraMemoryAllocated counts bytes of memory allocated
-void heapSort(int arr[], int n)
-{
+void heapSort(int arr[], int n){
+	for (int i = N / 2 - 1; i >= 0; i--)
+ 
+        heapify(arr, n, i);
+ 
+    // Heap sort
+    for (int i = n - 1; i >= 0; i--) {
+ 
+        swap(&arr[0], &arr[i]);
+ 
+        // Heapify root element to get highest element at
+        // root again
+        heapify(arr, i, 0);
+    }
+	
 }
 
 
@@ -15,6 +74,12 @@ void heapSort(int arr[], int n)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+	if(l < r){
+		int m = l + (r-1) / 2;
+		mergeSort(pData, l, m);
+		mergeSort(pData, m + 1, r);
+		merge(pData, l, m, r);
+	}
 }
 
 // parses input file to an integer array
