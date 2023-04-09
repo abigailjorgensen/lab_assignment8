@@ -1,6 +1,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int extraMemoryAllocated;
 
@@ -53,7 +54,7 @@ void heapify(int arr[], int N, int i)
 // implements heap sort
 // extraMemoryAllocated counts bytes of memory allocated
 void heapSort(int arr[], int n){
-	for (int i = N / 2 - 1; i >= 0; i--)
+	for (int i = n / 2 - 1; i >= 0; i--)
  
         heapify(arr, n, i);
  
@@ -69,7 +70,46 @@ void heapSort(int arr[], int n){
 	
 }
 
+void merge(int pData[], int l, int m, int r) {
+    int i, j, k, one, two;
+    one = m - l + 1;
+    two = r - m;
+    
+	int* left = (int*)malloc(one * sizeof(int));
+	int* right = (int*)malloc(one * sizeof(int));
+	extraMemoryAllocated += one * sizeof(int) + two * sizeof(int);
 
+    for (i = 0; i < one; i++)
+        left[i] = pData[l + i];
+    for (j = 0; j < two; j++)
+        right[j] = pData[m + 1 + j];
+ 
+    i = 0, j = 0, k = l;
+   
+    while (i < one && j < two) {
+        if (left[i] <= right[j]) {
+            pData[k] = left[i];
+            i++;
+        }
+        else {
+            pData[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+ 
+    while (i < one) {
+        pData[k] = left[i];
+        i++;
+        k++;
+    }
+ 
+    while (j < two) {
+        pData[k] = right[j];
+        j++;
+        k++;
+    }
+}
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
